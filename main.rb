@@ -9,5 +9,6 @@ get '/' do
 end
 
 get '/test' do
-  "From the testing action!" + params[:some].to_s
+  @my_var = "Wendy"
+  erb :test
 end
