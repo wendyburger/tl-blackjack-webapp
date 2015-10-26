@@ -5,10 +5,17 @@ require 'pry'
 set :sessions, true
 
 get '/' do
-  "Hello world!!!!!!!"
+  erb :set_name
 end
 
-get '/test' do
-  @my_var = "Wendy"
-  erb :test
+
+#Don't use @name = params[:player_name], when redirect, data will missing
+#Use session[:player_name] = params[:player_name], data storage in cookies
+post '/set_name' do
+  session[:player_name] = params[:player_name]
+  redirect '/game'
+end
+
+get '/game' do
+  erb :game
 end
