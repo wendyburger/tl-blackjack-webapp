@@ -17,5 +17,8 @@ post '/set_name' do
 end
 
 get '/game' do
+  session[:deck] = [['2', 'H'], ['8', 'D']]
+  session[:player_cards] = []
+  session[:player_cards] << session[:deck].pop
   erb :game
 end
