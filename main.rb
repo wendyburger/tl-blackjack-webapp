@@ -2,7 +2,17 @@ require 'rubygems'
 require 'sinatra'
 require 'pry'
 
-set :sessions, true
+use Rack::Session::Cookie, :key => 'rack.session',
+                           :path => '/',
+                           :secret => 'my_secret' 
+
+helpers do
+  def calculate_total(cards)
+    55
+  end
+end
+
+
 
 get '/' do
   erb :set_name
@@ -21,4 +31,14 @@ get '/game' do
   session[:player_cards] = []
   session[:player_cards] << session[:deck].pop
   erb :game
+end
+
+
+
+get '/mytemplate' do
+  redirect "/myprofile"  
+end
+
+get '/myprofile' do
+  erb :"/users/profile"
 end
