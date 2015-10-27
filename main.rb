@@ -6,13 +6,6 @@ use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
                            :secret => 'my_secret' 
 
-helpers do
-  def calculate_total(cards)
-    55
-  end
-end
-
-
 
 get '/' do
   erb :set_name
@@ -23,8 +16,25 @@ end
 #Use session[:player_name] = params[:player_name], data storage in cookies
 post '/set_name' do
   session[:player_name] = params[:player_name]
-  redirect '/game'
+  redirect '/bet'
 end
+
+
+get '/bet' do
+  erb :bet
+end
+
+
+post '/bet' do
+  session[:a_bet] = params[:a_bet]
+  redirect '/show_cost'
+end
+
+
+get '/show_cost' do
+  erb :show_cost
+end
+
 
 get '/game' do
   session[:deck] = [['2', 'H'], ['8', 'D']]
