@@ -1,8 +1,33 @@
-<h4>Hi!<%= session[:player_name] %></h4>
+<h1>Blackjack game</h1>
 
-Your cards are:
+<h4>Welcome! <%= session[:player_name] %></h4>
+
+<p>dealer's cards are:</p>
+<ul>
+  <% session[:dealer_cards].each do |card| %>
+    <li><%= card.to_s %></li>
+  <% end %>
+</ul>
+<p>Dealer has <%= calculate_total(session[:dealer_cards])%></p>
+<input type='submit' class='btn'/>
+
+
+</br>
+
+
+
+<p>player's cards are</p>
 <ul>
   <% session[:player_cards].each do |card| %>
     <li><%= card.to_s %></li>
   <% end %>
 </ul>
+
+<p>
+  What would you like to do?
+  <%= session[:player_name] %> has <%= calculate_total(session[:player_cards])%>
+</p>
+
+<input type='submit' class='btn'/>
+<input type='submit' class='btn'/>
+

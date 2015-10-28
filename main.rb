@@ -7,7 +7,41 @@ use Rack::Session::Cookie, :key => 'rack.session',
                            :secret => 'my_secret' 
 
 
+helpers do
+  def calculate_total(cards)
+    arr = cards.map{|element| element[1]}
+
+    total = 0
+    
+    arr.each do |a|
+      if a == "A"
+        total += 11
+      else
+        total += a.to_i == 0 ? 10 : a.to_i 
+      end
+    end
+
+    #Ace correct
+    arr.select{|element| element == "A"}.count.times do
+      break if total <= 21
+      total -= 10
+    end
+
+    total
+
+  end
+end
+
+
 get '/' do
+  if session[:player_name]
+    redirect '/game'
+  else
+    redirect '/set_name'
+  end
+end
+
+get '/set_name' do
   erb :set_name
 end
 
@@ -16,39 +50,41 @@ end
 #Use session[:player_name] = params[:player_name], data storage in cookies
 post '/set_name' do
   session[:player_name] = params[:player_name]
-  redirect '/bet'
+  redirect '/game'
 end
 
-
-get '/bet' do
-  erb :bet
-end
-
-
-post '/bet' do
-  session[:a_bet] = params[:a_bet]
-  redirect '/show_cost'
-end
-
-
-get '/show_cost' do
-  erb :show_cost
-end
 
 
 get '/game' do
-  session[:deck] = [['2', 'H'], ['8', 'D']]
+  #create a deck in a session
+  suits = ['H', 'D', 'C', 'S']
+  values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+  session[:deck] = suits.product(values).shuffle!
+  
+  #deal cards
+  session[:dealer_cards] = []
   session[:player_cards] = []
+  session[:dealer_cards] << session[:deck].pop
   session[:player_cards] << session[:deck].pop
+  session[:dealer_cards] << session[:deck].pop
+  session[:player_cards] << session[:deck].pop
+  
   erb :game
 end
 
 
-
-get '/mytemplate' do
-  redirect "/myprofile"  
+post 'game' do
+  
 end
 
-get '/myprofile' do
-  erb :"/users/profile"
-end
+
+
+
+
+
+
+
+
+
+
+
