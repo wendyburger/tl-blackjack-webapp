@@ -75,6 +75,11 @@ end
 #Don't use @name = params[:player_name], when redirect, data will missing
 #Use session[:player_name] = params[:player_name], data storage in cookies
 post '/set_name' do
+  if params[:player_name].empty?
+    @error = "Name is required"
+    halt erb(:set_name)
+  end
+
   session[:player_name] = params[:player_name]
   redirect '/game'
 end
