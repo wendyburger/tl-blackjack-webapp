@@ -5,13 +5,11 @@
 
 <div class="well">
   <h4>dealer's cards are:</h4>
-  <ul>
     <% session[:dealer_cards].each do |card| %>
-      <li><%= card.to_s %></li>
+      <%= card_img(card) %>
     <% end %>
-  </ul>
-  
 </div>
+
 <p>Dealer has <%= calculate_total(session[:dealer_cards])%></p>
 <form action='/game/dealer/hit' method='post'>
   <input type='submit' class='btn btn-success' value="dealer's turn"/> 
@@ -24,11 +22,9 @@
 
 <div class="well">
   <h4>player's cards are:</h4>
-  <ul>
     <% session[:player_cards].each do |card| %>
-      <li><%= card.to_s %></li>
+      <%= card_img(card) %>
     <% end %>
-  </ul>
 </div>
 
 <p>

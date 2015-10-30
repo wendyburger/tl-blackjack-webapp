@@ -30,7 +30,29 @@ helpers do
     total
 
   end
+
+  def card_img(card)#['H','9']
+    suit = case card[0]
+    when 'C' then 'clubs'
+    when 'D' then 'diamonds'
+    when 'H' then 'hearts'
+    when 'S' then 'spades'      
+    end
+  
+  
+    value = card[1]
+    if ['J','Q','K', 'A'].include?(value)
+      value = case card[1]
+        when 'J' then 'jack'
+        when 'Q' then 'queen'
+        when 'K' then 'king'
+        when 'A' then 'ace'
+        end
+    end
+    "<img src='/images/cards/#{suit}_#{value}.jpg' class='card_image' >"
+  end
 end
+
 
 before do
   @show_hit_or_stay = true
@@ -79,16 +101,19 @@ end
 
 post '/game/player/hit' do
   session[:player_cards] << session[:deck].pop
-  if calculate_total(session[:player_cards]) > 21
-    @error = "Sorry, it looks like you busted!"
-    @show_hit_or_stay = false
-  end
+  player_total = calculate_total(session[:player_cards])
+    if player_total == 21
+      @success = "Congratulation! #{session[:player_name]} hit blackjack!"
+    elsif player_total > 21
+      @error = "Sorry, it looks like #{session[:player_name]} busted!"
+      @show_hit_or_stay = false
+    end
   erb :game
 end
 
 
 post '/game/player/stay' do
-  @success = "You have chosen to stay"
+  @success = "#{session[:player_name]} has chosen to stay"
   @show_hit_or_stay = false
   erb :game
 
