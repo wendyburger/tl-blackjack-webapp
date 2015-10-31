@@ -110,6 +110,7 @@ end
 
 
 get '/game' do
+  session[:true] = session[:player_name]
   #create a deck in a session
   suits = ['H', 'D', 'C', 'S']
   values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -147,6 +148,7 @@ end
 
 
 get '/game/dealer' do
+  session[:true] = "dealer"
   @show_hit_or_stay = false
   dealer_total = calculate_total(session[:dealer_cards])
   if dealer_total == BLACKJACK_AMOUNT
