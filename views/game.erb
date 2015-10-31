@@ -11,10 +11,11 @@
 </div>
 
 <p>Dealer has <%= calculate_total(session[:dealer_cards])%></p>
-<form action='/game/dealer/hit' method='post'>
-  <input type='submit' class='btn btn-success' value="dealer's turn"/> 
-</form>
-
+<% if @show_dealer_hit_button %>
+  <form action='/game/dealer/hit' method='post'>
+    <input type='submit' class='btn btn-success' value="Click to see dealer's cards &rarr;"/> 
+  </form>
+<% end %>
 
 
 </br>

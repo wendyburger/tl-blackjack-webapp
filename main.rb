@@ -120,9 +120,34 @@ end
 post '/game/player/stay' do
   @success = "#{session[:player_name]} has chosen to stay"
   @show_hit_or_stay = false
-  erb :game
-
+  redirect '/game/dealer'
 end
+
+
+get '/game/dealer' do
+  @show_hit_or_stay = false
+  dealer_total = calculate_total(session[:dealer_cards])
+  if dealer_total == 21
+    @error = "Sorry, delear hit blackjack. Dealer win"
+  elsif dealer_total > 21
+    @success = "Congratulation, delear busted. You win!"
+  elsif dealer_total >= 17 #17,18,19,20
+  #dealer stay
+    redirect '/game/compare'
+  else
+  #dealer hit
+    @show_dealer_hit_button = true
+
+  end
+  erb :game
+end
+
+post '/game/dealer/hit' do
+  session[:dealer_cards] << session[:deck].pop
+  redirect '/game/dealer'
+end
+
+
 
 
 
