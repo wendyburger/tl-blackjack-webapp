@@ -6,6 +6,9 @@ use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
                            :secret => 'my_secret' 
 
+BLACKJACK_AMOUNT = 21
+DEALER_MIN_HIT = 17
+
 
 helpers do
   def calculate_total(cards)
@@ -23,7 +26,7 @@ helpers do
 
     #Ace correct
     arr.select{|element| element == "A"}.count.times do
-      break if total <= 21
+      break if total <= BLACKJACK_AMOUNT
       total -= 10
     end
 
@@ -127,9 +130,9 @@ end
 post '/game/player/hit' do
   session[:player_cards] << session[:deck].pop
   player_total = calculate_total(session[:player_cards])
-    if player_total == 21
+    if player_total == BLACKJACK_AMOUNT
       winner!("#{session[:player_name]} hit blackjack.")
-    elsif player_total > 21
+    elsif player_total > BLACKJACK_AMOUNT
       loser!("#{session[:player_name]} busted at #{player_total}.")
     end
   erb :game
@@ -146,11 +149,11 @@ end
 get '/game/dealer' do
   @show_hit_or_stay = false
   dealer_total = calculate_total(session[:dealer_cards])
-  if dealer_total == 21
+  if dealer_total == BLACKJACK_AMOUNT
     loser!("Dealer hit blackjack.")
-  elsif dealer_total > 21
+  elsif dealer_total > BLACKJACK_AMOUNT
     winner!("Dealer busted at #{dealer_total}.")
-  elsif dealer_total >= 17 #17,18,19,20
+  elsif dealer_total >= DEALER_MIN_HIT #17,18,19,20
   #dealer stay
     redirect '/game/compare'
   else
