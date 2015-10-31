@@ -2,6 +2,13 @@
 
 <h4>Welcome! <%= session[:player_name] %></h4>
 
+<% if @play_again %>
+  <p>
+    <strong>Play again?</strong>
+    <a href="/game" class="btn btn-danger">Yes</a>
+    <a href="/game_over" class="btn">No</a>
+  </p>
+<% end %>
 
 <div class="well">
   <h4>dealer's cards are:</h4>
