@@ -33,7 +33,8 @@
 </br>
 
 
-<div class="well">
+<div class="well" id="player_area">
+  <a id="player_color" href="#">Chang it to pink</a>
   <h4>player's cards are:</h4>
     <% session[:player_cards].each do |card| %>
       <%= card_img(card) %>
